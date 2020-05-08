@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:include="include/admin/adminHeader::html('编辑超级用户')"></head>
+    <body>
+        <script>
+            $(function () {
+               var dataVue = {
+                    uri:'manager',
+                    bean:{id:0,name:'',sex:'1',username:'',password:'',salt:''},
+                    unameMsg:''
+                };
+                var vue = new  Vue({
+                    el : '#editUser',
+                    data : dataVue,
+                    mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+                        this.getUserMsg();
+                    },
+                    methods : {
+                        //获取修改用户信息
+                        getUserMsg : function () {
+                            var id = getUrlParms('id');
+                            var url = this.uri + "/getManagerUserById?id="+id;
+                            axios.get(url).then(function (response) {
+                                vue.bean =  response.data;
+                            })
+                        },
+                        //修改用户信息
+                        changeUserMsg : function(){
+                            if(checkEmpty(this.bean.name,"姓名")){ //判空
+                                return;
+                            }
+                            if(checkEmpty(this.bean.password,"密码")){ //判空
+                                return;
+                            }
+                            if(!checkUpdateLink()){
+                                return;
+                            }
+                            if($("#password").val().length>15){
+                                alert("密码长度不能多与15位");
+                                return;
+                            }
+                            var url = this.uri + '/changeManagerUserMsg';
+                            axios.post(url,vue.bean).then(function(response){
+                                alert(response.data);
+                                location.reload();
+                            });
+                        }
+                    }
+                })
+            })
+        </script>
+    <div th:replace="include/admin/navList :: nav"></div>
+    <div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+            <div id="editUser" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+                <div class="panel panel-default" style="width: 800px;margin: 0 auto;margin-top: 100px">
+                    <div class="panel-heading">编辑超级用户信息</div>
+                    <div class="panel-body">
+                    <table   width="600px" height="400px">
+                        <tr>
+                            <td>ID:</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="bean.id" readonly="readonly"  />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>姓名:</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="bean.name"   />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>性别:</td>
+                            <td><select v-model="bean.sex" class="form-control">
+                                    <option value="1">男</option>
+                                    <option value="0">女</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>用户名:</td>
+                            <td><input type="text" class="form-control" v-model="bean.username" readonly="readonly"  /></td>
+                        </tr>
+                        <tr>
+                            <td>密码:</td>
+                            <td><input id="password" type="text" class="form-control" v-model="bean.password" ></td>
+                        </tr>
+                        <tr >
+                            <td style="position: absolute;left: 800px"><button type="button" class="btn btn-sm" @click="changeUserMsg()">提交</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    </body>
+</html>

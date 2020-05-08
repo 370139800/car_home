@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.ManagerUserDao">
+		<!--ManagerUser getManagerUserByUsername(String username);-->
+		<select id="getManagerUserByUsername" resultType="com.springboot.demo.bean.ManagerUser">
+			select
+				id,name,sex,username,password,salt
+			from
+				manageruser
+			where
+				username = #{username}
+		</select>
+		<!--void updateManagerUser(ManagerUser user);-->
+		<update id="updateManagerUser" parameterType="com.springboot.demo.bean.ManagerUser" >
+				update
+					manageruser
+				set
+					name=#{name},sex=#{sex},username=#{username},password=#{password},salt=#{salt}
+				where
+					id = #{id}
+		</update>
+
+		<!--ManagerUser findOneManagerUser(Integer id);-->
+		<select id="findOneManagerUser" resultType="com.springboot.demo.bean.ManagerUser">
+			select
+				id,name,sex,username,password,salt
+			from
+				manageruser
+			where
+				id = #{id}
+		</select>
+
+		</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.UserDao">
+		<!-- List<User> findAllUser(@Param("username") String username)-->
+		<select id="findAllUser" resultType="com.springboot.demo.bean.User" >
+			select
+				id,name,sex,username,password,salt
+			from 
+				user
+			<where>
+				<if test="username !=''">
+					username like CONCAT(CONCAT('%', #{username, jdbcType=VARCHAR}),'%')
+				</if>
+			</where>
+		</select>
+
+	<!--User findOneUser(Integer id);-->
+		<select id="findOneUser" resultType="com.springboot.demo.bean.User">
+			select
+				id,name,sex,username,password,salt
+			from
+				user
+			where
+				id = #{id}
+		</select>
+
+		<!--void updateUser(User user);-->
+		<update id="updateUser" parameterType="com.springboot.demo.bean.User" >
+			update
+				user
+			set
+				name=#{name},sex=#{sex},username=#{username},password=#{password},salt=#{salt}
+			where
+				id = #{id}
+		</update>
+
+		<!--void deleteUser(Integer id);-->
+		<delete id="deleteUser"	>
+				delete from
+					user
+				where
+					id = #{id}
+		</delete>
+		<!--void insertUser(User user);-->
+		<insert id="insertUser" parameterType="com.springboot.demo.bean.User"  >
+				INSERT  INTO
+					user(name,sex,username,password,salt)
+				VALUES (#{name},#{sex},#{username},#{password},#{salt})
+		</insert>
+
+		<!--User getUserByUsername(String username);-->
+		<select id="getUserByUsername" resultType="com.springboot.demo.bean.User">
+			select
+				id,name,sex,username,password,salt
+			from
+				user
+			where
+				username = #{username}
+		</select>
+
+	</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,95 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+    <head th:include="include/admin/adminHeader::html('用户列表')">
+    </head>
+    <body>
+        <script>
+             $(function(){
+                 var dataVue={
+                     uri:"user",
+                     pagination:{},
+                     beans:[],
+                     bean:{id:0,name:'',sex:'1',username:'',password:''}
+                 };
+                 var vue = new Vue({
+                     el:"#userInfo",
+                     data:dataVue,
+                     mounted:function(){  //当vue加载成功执行它
+                         this.list(1);
+                     },
+                     methods : {
+                         //获取用户信息
+                         list : function(start,username){
+                             if(username==undefined){
+                                 username='';
+                             }
+                             var url = this.uri + "/listUser?start="+start+"&username="+username;
+                             axios.get(url).then(function(response) {
+                                 vue.pagination=response.data;
+                                 vue.beans=response.data.list;
+                             });
+                         },
+                         //删除用户
+                         deleteBean : function (id) {
+                                if(!checkDeleteLink()){
+                                    return;
+                                }
+                                var url = this.uri + '/removeUser?id='+id;
+                                axios.get(url).then(function(response){
+                                   location.reload();
+                                })
+                         },
+                         //获取匹配用户
+                         getMatchUser : function () {
+                             this.list(1,this.bean.username);
+                         },
+                         jump : function (page) {
+                             jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                         },
+                         jumpByNumber : function(start){
+                             jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                         }
+                     }
+                });
+             });
+        </script>
+    <div th:replace="include/admin/navList :: nav"></div>
+    <div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+        <div id="userInfo" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+            <div style="margin-top: 100px" >
+                <input type="text" placeholder="请输入用户名" v-model.trim="bean.username" class="form-control" style="width:300px;margin-left:35%" @keyup.enter="getMatchUser()"/>
+                <button class="btn btn-default" type="button" style="margin-left:58%;margin-top: -35px;" @click="getMatchUser()">查找</button>
+            </div>
+            <div id="userInfo_pageList">
+                <table class="table table-striped table-bordered table-hover  table-condensed">
+                    <thead>
+                        <th>id</th>
+                        <th>操作</th>
+                        <th>头像</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>用户名</th>
+                        <th>密码</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for='b in beans'>
+                            <td>{{b.id}}</td>
+                            <td>
+                                <a :href="'editUser?id=' + b.id " style="text-decoration:none">编辑</a>
+                                <a  href="#" @click="deleteBean(b.id)" style="text-decoration:none">删除</a>
+                            </td>
+                            <td><a :href="'updateImage?id='+b.id" style="text-decoration:none"><img  :src="'image/user/small_Image/'+b.id+'.jpg'" class="img-circle" height="30px"></a></td>
+                            <td>{{b.name}}</td>
+                            <td v-if='b.sex==1'>男</td>
+                            <td v-if='b.sex==0'>女</td>
+                            <td>{{b.username}}</td>
+                            <td>{{b.password}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageNav">
+                <div  th:replace="include/admin/adminPage::html" ></div>
+            </div>
+        </div>
+    </body>
+</html>

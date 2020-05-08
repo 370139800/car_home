@@ -1,0 +1,144 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('基本参数列表')">
+</head>
+<body>
+<script>
+    $(function(){
+        var dataVue={
+            uri:"propertyValue",
+            pagination:{},
+            beans:[],
+            ccategoryId:0,
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new Vue({
+            el:"#basicParamPropertyValue",
+            data:dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list(1);
+            },
+            methods : {
+                //获取用户信息
+                list : function(start){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    var master = getUrlParms('master'); //显示一级分类id
+                    var name = getUrlParms('name');
+                    this.name = name;
+                    this.grantParentId = grantParentId;
+                    this.master = master;
+                    var ccategoryId = getUrlParms("ccategoryId");
+                    this.ccategoryId = ccategoryId;
+                    var url = this.uri + "/listAllBasicParamPropertyValue?ccategoryId="+ccategoryId+"&start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination=response.data;
+                        vue.beans=response.data.list;
+                    });
+                },
+                //删除指定用户
+                deleteBean : function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/deleteOneParamPropertyValue?id="+id;
+                    axios.get(url).then(function(response) {
+                        location.reload();
+                    });
+                },
+                jump : function (page) {
+                    jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                },
+                jumpByNumber : function(start){
+                    jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                }
+            }
+        });
+
+        //修改时间格式
+        /* 全局函数 */
+        Vue.filter('formatDateFilter', function (value, formatString) {
+            if(null==value)
+                return "";
+            formatString = formatString || 'YYYY-MM-DD';
+            return moment(value).format(formatString);
+        });
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="basicParamPropertyValue">
+    <div style="position:fixed;margin-top: -55px;margin-left: 92%">
+        <a :href="'listThridCarCategory?parentId='+this.grantParentId+'&grantParent='+master"><button type="button" class="btn btn-info">返回上一级</button></a>
+    </div>
+    <div  style="position: absolute;top: 80px;left:700px;font-size: 25px;color: greenyellow">{{name}}参数配置</div>
+    <div th:replace="include/admin/propertyNavList :: propertyNav"></div>
+    <div  style="border: 2px solid silver;margin-top: 130px;margin-left: 150px;overflow:auto;height: 590px;width: 1385px">
+        <div >
+            <div id="basicParamPropertyValue_pageList">
+                <table class="table table-striped table-bordered table-hover  table-condensed">
+                    <thead style="font-size: 15px">
+                        <th>id</th>
+                        <th>操作</th>
+                        <th>分类id</th>
+                        <th>厂商</th>
+                        <th>级别</th>
+                        <th>能源类型</th>
+                        <th>环保标准</th>
+                        <th>上市时间</th>
+                        <th>最大功率</th>
+                        <th>最大扭矩</th>
+                        <th>发动机</th>
+                        <th>变速箱</th>
+                        <th>长*宽*高</th>
+                        <th>车身结构</th>
+                        <th>最高车速(km/h)</th>
+                        <th>官方0-100km/h加速(s)</th>
+                        <th>实测0-100km/h加速(s)</th>
+                        <th>实测0-100km/h制动(m)</th>
+                        <th>工信部综合油耗(L/100km)</th>
+                        <th>实测油耗(L/100km)</th>
+                        <th>整车质保</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for='b in beans' >
+                            <td>{{b.id}}</td>
+                            <td>
+                                <a :href="'editBasicParamPropertyValue?id='+b.id+'&grantParentId='+grantParentId+'&master='+master+'&name='+name" style="text-decoration:none">编辑</a>
+                                <a  href="#"  style="text-decoration:none" @click="deleteBean(b.id)">删除</a>
+                            </td>
+                            <td>{{b.ccategoryId}}</td>
+                            <td>{{b.manufacturer}}</td>
+                            <td >{{b.rank}}</td>
+                            <td >{{b.energyType}}</td>
+                            <td>{{b.environmentalProtection}}</td>
+                            <td>{{b.markTime | formatDateFilter }}</td>
+                            <td >{{b.maxPower}}</td>
+                            <td >{{b.maxTorque}}</td>
+                            <td>{{b.engine}}</td>
+                            <td>{{b.gearbox}}</td>
+                            <td>{{b.lengthWidthHeight}}</td>
+                            <td>{{b.bodyStructure}}</td>
+                            <td >{{b.maximumSpeed}}</td>
+                            <td >{{b.officialSpeed}}</td>
+                            <td>{{b.measuredSpeed}}</td>
+                            <td>{{b.measuredBraking}}</td>
+                            <td >{{b.cfcomoiat}}</td>
+                            <td >{{b.measuredConsumption}}</td>
+                            <td>{{b.vehicleWarranty}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageNav3">
+                <div  th:replace="include/admin/adminPage::html" ></div>
+            </div>
+            <div id="addbasicParamPropertyValue" style="position: absolute;left: 770px;bottom: 80px">
+                <a  class="btn btn-lg" :href="'addBasicParamPropertyValue?ccategoryId='+ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size: 14px;position:fixed" >新增属性值</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

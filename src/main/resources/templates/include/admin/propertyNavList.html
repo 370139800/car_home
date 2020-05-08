@@ -1,0 +1,14 @@
+<div th:fragment="propertyNav">
+    <div id="leftNav" style="float: left;margin-top: -65px;margin-left: 10px;position: fixed">
+        <ul class="nav nav-pills nav-stacked" style="width:80px;">
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listBasicParamPropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">基本参数</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listBodyworkPropertyvalue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">车身</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listEnginePropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">发动机</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listGearboxPropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">变速箱</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listChassissteeringPropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">底盘转向</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listWheelbrakePropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">车轮制动</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listSafetyquipmentPropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">主/被动安全装备</a></li>
+            <li role="presentation" class="active" style="width: 130px"><a :href="'listManipulationPropertyValue?ccategoryId='+this.ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size:10px ;">辅助/操控配置</a></li>
+        </ul>
+    </div>
+</div>

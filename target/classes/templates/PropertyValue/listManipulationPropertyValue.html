@@ -1,0 +1,132 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('辅助操控设备列表')">
+</head>
+<body>
+<script>
+    $(function(){
+        var dataVue={
+            uri:"propertyValue",
+            pagination:{},
+            beans:[],
+            ccategoryId:0,
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new Vue({
+            el:"#manipulationPropertyValue",
+            data:dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list(1);
+            },
+            methods : {
+                //获取辅助设备信息
+                list : function(start){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    var master = getUrlParms('master'); ///显示一级分类id
+                    this.grantParentId = grantParentId;
+                    this.master = master;var name = getUrlParms('name');
+                    this.name = name;
+                    var ccategoryId = getUrlParms("ccategoryId");
+                    this.ccategoryId = ccategoryId;
+                    var url = this.uri + "/listAllManipulationPropertyValue?ccategoryId="+ccategoryId+"&start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination=response.data;
+                        vue.beans=response.data.list;
+                    });
+                },
+                //删除指定用户
+                deleteBean : function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/deleteOneManipulationPropertyValue?id="+id;
+                    axios.get(url).then(function(response) {
+                        location.reload();
+                    });
+                },
+                jump : function (page) {
+                    jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                },
+                jumpByNumber : function(start){
+                    jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                }
+            }
+        });
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="manipulationPropertyValue">
+    <div style="position:fixed;margin-top: -55px;margin-left: 92%">
+        <a :href="'listThridCarCategory?parentId='+this.grantParentId+'&grantParent='+master"><button type="button" class="btn btn-info">返回上一级</button></a>
+    </div>
+    <div style="position: absolute;top: 80px;left:700px;font-size: 25px;color: greenyellow">{{name}}参数配置</div>
+    <div th:replace="include/admin/propertyNavList :: propertyNav"></div>
+    <div  style="border: 2px solid silver;margin-top: 130px;margin-left: 150px;overflow:auto;height: 590px;width: 1385px">
+        <div >
+            <div id="basicParamPropertyValue_pageList">
+                <table class="table table-striped table-bordered table-hover  table-condensed">
+                    <thead style="font-size: 15px">
+                        <th>id</th>
+                        <th>操作</th>
+                        <th>分类id</th>
+                        <th>前/后驻车雷达</th>
+                        <th>驾驶辅助影像</th>
+                        <th>倒车车侧预警系统</th>
+                        <th>巡航系统</th>
+                        <th>驾驶模式切换</th>
+                        <th>自动泊车入位</th>
+                        <th>发动机启停技术</th>
+                        <th>自动驻车</th>
+                        <th>上坡辅助</th>
+                        <th>陡坡缓降</th>
+                        <th>可变悬架功能</th>
+                        <th>空气悬架</th>
+                        <th>电池感应悬架</th>
+                        <th>可变转向比</th>
+                        <th>中央差速器锁止功能</th>
+                        <th>整体主动转向系统</th>
+                        <th>限滑差速器/差速锁</th>
+                        <th>涉水感应系统</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for='b in beans' >
+                            <td>{{b.id}}</td>
+                            <td>
+                                <a :href="'editManipulationPropertyValue?id='+b.id+'&grantParentId='+grantParentId+'&master='+master+'&name='+name" style="text-decoration:none">编辑</a>
+                                <a  href="#"  style="text-decoration:none" @click="deleteBean(b.id)">删除</a>
+                            </td>
+                            <td>{{b.ccategoryId}}</td>
+                            <td>{{b.parkingradar}}</td>
+                            <td >{{b.auxiliaryimage}}</td>
+                            <td >{{b.backawacssystem}}</td>
+                            <td>{{b.cruisesystem}}</td>
+                            <td>{{b.patternswitch}}</td>
+                            <td >{{b.autoparkina}}</td>
+                            <td >{{b.enginestartandstoptechnology}}</td>
+                            <td>{{b.autobreak}}</td>
+                            <td>{{b.uphillassist}}</td>
+                            <td>{{b.abruptslowdescent}}</td>
+                            <td>{{b.variablesuspension}}</td>
+                            <td >{{b.airsuspension}}</td>
+                            <td >{{b.batteryinducedsuspension}}</td>
+                            <td>{{b.variablesteerratio}}</td>
+                            <td>{{b.centraldifferentiallocking}}</td>
+                            <td >{{b.integralactivesteer}}</td>
+                            <td >{{b.differentlock}}</td>
+                            <td>{{b.wadsensor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageNav3">
+                <div  th:replace="include/admin/adminPage::html" ></div>
+            </div>
+            <div id="addbasicParamPropertyValue" style="position: absolute;left: 770px;bottom: 80px">
+                <a  class="btn btn-lg" :href="'addManipulationPropertyValue?ccategoryId='+ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size: 14px;position:fixed" >新增属性值</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

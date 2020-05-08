@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.PropertyValueDao">
+
+	<!--***********************************辅助操控配置**************-->
+
+	<!--获取辅助操控配置-->
+	<!--List<ManipulationPropertyValue>  listAllManipulationPropertyValue(Integer ccategoryId);-->
+	<select id="listAllManipulationPropertyValue" resultType="com.springboot.demo.bean.ManipulationPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				parkingradar,
+				auxiliaryimage,
+				backawacssystem,
+				cruisesystem,
+				patternswitch,
+				autoparkina,
+				enginestartandstoptechnology,
+				autobreak,
+				uphillassist,
+				abruptslowdescent,
+				variablesuspension,
+				airsuspension,
+				batteryinducedsuspension,
+				variablesteerratio,
+				centraldifferentiallocking,
+				integralactivesteer,
+				differentlock,
+				wadsensor
+			from
+				car_manipulation_peopertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+	</select>
+
+	<!--删除-->
+	<!--void deleteOneManipulationPropertyValue(Integer id);-->
+	<delete id="deleteOneManipulationPropertyValue">
+			delete
+				from
+					car_manipulation_peopertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改-->
+	<!--void updateOneManipulationPropertyValue(ManipulationPropertyValue mp);-->
+	<update id="updateOneManipulationPropertyValue" parameterType="com.springboot.demo.bean.ManipulationPropertyValue">
+			update
+				car_manipulation_peopertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				parkingradar = #{parkingradar},
+				auxiliaryimage = #{auxiliaryimage},
+				backawacssystem = #{backawacssystem},
+				cruisesystem = #{cruisesystem},
+				patternswitch = #{patternswitch},
+				autoparkina = #{autoparkina},
+				enginestartandstoptechnology=#{enginestartandstoptechnology},
+				autobreak = #{autobreak},
+				uphillassist = #{uphillassist},
+				abruptslowdescent = #{abruptslowdescent},
+				variablesuspension = #{variablesuspension},
+				airsuspension = #{airsuspension},
+				batteryinducedsuspension = #{batteryinducedsuspension},
+				variablesteerratio = #{variablesteerratio},
+
+				centraldifferentiallocking=#{centraldifferentiallocking},
+				integralactivesteer = #{integralactivesteer},
+				differentlock = #{differentlock},
+				wadsensor = #{wadsensor}
+			where
+				id = #{id}
+	</update>
+
+	<!--获取一个-->
+	<!--ManipulationPropertyValue getOneManipulationPropertyValue(Integer id);-->
+	<select id="getOneManipulationPropertyValue" resultType="com.springboot.demo.bean.ManipulationPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				parkingradar,
+				auxiliaryimage,
+				backawacssystem,
+				cruisesystem,
+				patternswitch,
+				autoparkina,
+				enginestartandstoptechnology,
+				autobreak,
+				uphillassist,
+				abruptslowdescent,
+				variablesuspension,
+				airsuspension,
+				batteryinducedsuspension,
+				variablesteerratio,
+				centraldifferentiallocking,
+				integralactivesteer,
+				differentlock,
+				wadsensor
+			from
+				car_manipulation_peopertyvalue
+			where
+				id = #{id}
+	</select>
+
+	<!--添加-->
+	<!--void addOneManipulationPropertyValue(ManipulationPropertyValue mp);-->
+	<insert id="addOneManipulationPropertyValue" parameterType="com.springboot.demo.bean.ManipulationPropertyValue">
+			insert into
+				car_manipulation_peopertyvalue
+					(ccategory_id,parkingradar,auxiliaryimage,backawacssystem,cruisesystem,patternswitch,autoparkina,
+					enginestartandstoptechnology,autobreak,uphillassist,abruptslowdescent,variablesuspension,
+				    airsuspension,batteryinducedsuspension,variablesteerratio,centraldifferentiallocking,integralactivesteer,
+					differentlock,wadsensor)
+				values
+					(
+						#{ccategoryId},#{parkingradar},#{auxiliaryimage},#{backawacssystem},#{cruisesystem},#{patternswitch},#{autoparkina},
+						#{enginestartandstoptechnology},#{autobreak},#{uphillassist},#{abruptslowdescent},#{variablesuspension},#{airsuspension},
+						#{batteryinducedsuspension},#{variablesteerratio},#{centraldifferentiallocking},#{integralactivesteer},#{differentlock},#{wadsensor}
+					)
+	</insert>
+
+	<!--******************************主被动安全装备*******************-->
+
+	<!--获取所有安全装备信息-->
+	<!--List<SafetyequipmentPropertyValue>  listAllSafetyequipmentPropertyValue(Integer ccategoryId);-->
+	<select id="listAllSafetyequipmentPropertyValue" resultType="com.springboot.demo.bean.SafetyequipmentPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				airbag,
+				sideairbag,
+				headairbag,
+				kneeairbag,
+				safebeltairbag,
+				centersafeairbag,
+				passivepedestrianprotection,
+				tirepressuremonitoring,
+				zerotirecontinue,
+				seatbeltnotfastened,
+				childseatjoint,
+				abs,
+				ebd,
+				eba,
+				asr,
+				esc,
+				doublingauxiliary,
+				fromearlywarning,
+				keepassist,
+				trafficsign,
+				activebrake,
+				nightsight,
+				fatiguedrivingtip
+			from
+				car_safetyequipment_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+	</select>
+
+	<!--删除指定id的安全装备信息-->
+	<!--void deleteOneSafetyequipmentPropertyValue(Integer id)-->
+	<delete id="deleteOneSafetyequipmentPropertyValue">
+			delete
+				from
+					car_safetyequipment_propertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改安全装备信息-->
+	<!--void updateOneSafetyequipmentPropertyValue(SafetyequipmentPropertyValue sp)-->
+	<update id="updateOneSafetyequipmentPropertyValue" parameterType="com.springboot.demo.bean.SafetyequipmentPropertyValue">
+			update
+				car_safetyequipment_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				airbag = #{airbag},
+				sideairbag = #{sideairbag},
+				headairbag = #{headairbag},
+				kneeairbag = #{kneeairbag},
+				safebeltairbag = #{safebeltairbag},
+				centersafeairbag = #{centersafeairbag},
+				passivepedestrianprotection=#{passivepedestrianprotection},
+				tirepressuremonitoring = #{tirepressuremonitoring},
+				zerotirecontinue = #{zerotirecontinue},
+				seatbeltnotfastened = #{seatbeltnotfastened},
+				childseatjoint = #{childseatjoint},
+				abs = #{abs},
+				ebd = #{ebd},
+				eba = #{eba},
+
+				asr=#{asr},
+				esc = #{esc},
+				doublingauxiliary = #{doublingauxiliary},
+				fromearlywarning = #{fromearlywarning},
+				keepassist = #{keepassist},
+				trafficsign = #{trafficsign},
+				activebrake = #{activebrake},
+				nightsight = #{nightsight},
+				fatiguedrivingtip= #{fatiguedrivingtip}
+			where
+				id = #{id}
+	</update>
+
+	<!--获取一个安全装备信息-->
+	<!--SafetyequipmentPropertyValue getOneSafetyequipmentPropertyValue(Integer id);-->
+	<select id="getOneSafetyequipmentPropertyValue" resultType="com.springboot.demo.bean.SafetyequipmentPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				airbag,
+				sideairbag,
+				headairbag,
+				kneeairbag,
+				safebeltairbag,
+				centersafeairbag,
+				passivepedestrianprotection,
+				tirepressuremonitoring,
+				zerotirecontinue,
+				seatbeltnotfastened,
+				childseatjoint,
+				abs,
+				ebd,
+				eba,
+				asr,
+				esc,
+				doublingauxiliary,
+				fromearlywarning,
+				keepassist,
+				trafficsign,
+				activebrake,
+				nightsight,
+				fatiguedrivingtip
+			from
+				car_safetyequipment_propertyvalue
+			where
+				id = #{id}
+	</select>
+
+	<!--添加一个安全装备信息-->
+	<!--void addOneSafetyequipmentPropertyValue(SafetyequipmentPropertyValue sp);-->
+	<insert id="addOneSafetyequipmentPropertyValue" parameterType="com.springboot.demo.bean.SafetyequipmentPropertyValue">
+			insert into
+				car_safetyequipment_propertyvalue
+					(ccategory_id,airbag,sideairbag,headairbag,kneeairbag,safebeltairbag,centersafeairbag,passivepedestrianprotection,tirepressuremonitoring,
+					zerotirecontinue,seatbeltnotfastened,childseatjoint,abs,ebd,eba,asr,esc,doublingauxiliary,fromearlywarning,keepassist,trafficsign,
+					activebrake,nightsight,fatiguedrivingtip)
+				values
+					(
+						#{ccategoryId},#{airbag},#{sideairbag},#{headairbag},#{kneeairbag},#{safebeltairbag},#{centersafeairbag},
+						#{passivepedestrianprotection},#{tirepressuremonitoring},#{zerotirecontinue},#{seatbeltnotfastened},#{childseatjoint},#{abs},#{ebd},
+						#{eba},#{asr},#{esc},#{doublingauxiliary},#{fromearlywarning},#{keepassist},#{trafficsign},#{activebrake},#{nightsight},#{fatiguedrivingtip}
+					)
+	</insert>
+
+	<!--****************************车轮制动*****************************-->
+
+	<!--获取所有车轮制动信息-->
+	<!--List<WheelbrakePropertyvalue>  listAllWheelbrakePropertyvalue(Integer ccategoryId);-->
+	<select id="listAllWheelbrakePropertyvalue" resultType="com.springboot.demo.bean.WheelbrakePropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				frontbraketype,
+				rearbraketype,
+				parkingbraketype,
+				fronttyrespecification,
+				reartyrespecification,
+				sparetirespecifications
+			from
+				car_wheelbrake_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+	</select>
+
+	<!--删除指定id车轮制动信息-->
+	<!-- void deleteOneWheelbrakePropertyvalue(Integer id);-->
+	<delete id="deleteOneWheelbrakePropertyvalue">
+			delete
+				from
+					car_wheelbrake_propertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改车轮制动信息-->
+	<!-- void updateOneWheelbrakePropertyvalue(WheelbrakePropertyvalue wp);-->
+	<update id="updateOneWheelbrakePropertyvalue" parameterType="com.springboot.demo.bean.WheelbrakePropertyvalue">
+			update
+				car_wheelbrake_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				frontbraketype = #{frontbraketype},
+				rearbraketype = #{rearbraketype},
+				parkingbraketype = #{parkingbraketype},
+				fronttyrespecification = #{fronttyrespecification},
+				reartyrespecification = #{reartyrespecification},
+				sparetirespecifications = #{sparetirespecifications}
+			where
+				id = #{id}
+	</update>
+
+	<!--获取一个车轮信息-->
+	<!--WheelbrakePropertyvalue getOneWheelbrakePropertyvalue(Integer id);-->
+	<select id="getOneWheelbrakePropertyvalue" resultType="com.springboot.demo.bean.WheelbrakePropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				frontbraketype,
+				rearbraketype,
+				parkingbraketype,
+				fronttyrespecification,
+				reartyrespecification,
+				sparetirespecifications
+			from
+				car_wheelbrake_propertyvalue
+			where
+				id = #{id}
+	</select>
+
+	<!--添加车轮制动信息-->
+	<!--void addOneWheelbrakePropertyvalue(WheelbrakePropertyvalue wp);-->
+	<insert id="addOneWheelbrakePropertyvalue" parameterType="com.springboot.demo.bean.WheelbrakePropertyvalue">
+			insert into
+				car_wheelbrake_propertyvalue
+					(ccategory_id,frontbraketype,rearbraketype,parkingbraketype,fronttyrespecification,reartyrespecification,sparetirespecifications)
+				values
+					(#{ccategoryId},#{frontbraketype},#{rearbraketype},#{parkingbraketype},#{fronttyrespecification},#{reartyrespecification},#{sparetirespecifications})
+	</insert>
+
+
+	<!--********************************底盘转向*********************-->
+
+	<!--获取底盘转向信息-->
+	<!--List<ChassissteeringPropertyvalue>  listAllChassissteeringPropertyvalue(Integer ccategoryId);-->
+	<select id="listAllChassissteeringPropertyvalue" resultType="com.springboot.demo.bean.ChassissteeringPropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				drivemode,
+				allwheeldriveform,
+				centraldifferentialstructure,
+				frontsuspensiontype,
+				rearsuspensiontype,
+				powertype,
+				bodystructure
+			from
+				car_chassissteering_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+	</select>
+
+	<!--删除指定id的底盘信息-->
+	<!--void deleteOneChassissteeringPropertyvalue(Integer id);-->
+	<delete id="deleteOneChassissteeringPropertyvalue">
+			delete
+				from
+					car_chassissteering_propertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改指定底盘信息-->
+	<!--void updateOneChassissteeringPropertyvalue(ChassissteeringPropertyvalue cp)-->
+	<update id="updateOneChassissteeringPropertyvalue" parameterType="com.springboot.demo.bean.ChassissteeringPropertyvalue">
+			update
+				car_chassissteering_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				drivemode = #{drivemode},
+				allwheeldriveform = #{allwheeldriveform},
+				centraldifferentialstructure = #{centraldifferentialstructure},
+				frontsuspensiontype = #{frontsuspensiontype},
+				rearsuspensiontype = #{rearsuspensiontype},
+				powertype = #{powertype},
+				bodystructure = #{bodystructure}
+			where
+				id = #{id}
+	</update>
+
+	<!--获取一个底盘信息-->
+	<!-- ChassissteeringPropertyvalue getOneChassissteeringPropertyvalue(Integer id);-->
+	<select id="getOneChassissteeringPropertyvalue" resultType="com.springboot.demo.bean.ChassissteeringPropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				drivemode,
+				allwheeldriveform,
+				centraldifferentialstructure,
+				frontsuspensiontype,
+				rearsuspensiontype,
+				powertype,
+				bodystructure
+			from
+				car_chassissteering_propertyvalue
+			where
+				id = #{id}
+	</select>
+
+	<!--添加一个底盘信息-->
+	<!-- void addOneChassissteeringPropertyvalue(ChassissteeringPropertyvalue cp);-->
+	<insert id="addOneChassissteeringPropertyvalue" parameterType="com.springboot.demo.bean.ChassissteeringPropertyvalue">
+			insert into
+				car_chassissteering_propertyvalue(ccategory_id,drivemode,allwheeldriveform,centraldifferentialstructure,
+				frontsuspensiontype,rearsuspensiontype,powertype,bodystructure)
+				values(#{ccategoryId},#{drivemode},#{allwheeldriveform},#{centraldifferentialstructure},#{frontsuspensiontype}
+				,#{rearsuspensiontype},#{powertype},#{bodystructure})
+	</insert>
+
+	<!--***********************变速箱*********************************-->
+
+	<!--获取所有变速箱-->
+	<!--List<GearboxPropertyValue>  listAllGearboxPropertyValue(Integer ccategoryId);-->
+	<select id="listAllGearboxPropertyValue" resultType="com.springboot.demo.bean.GearboxPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				blocknumber,
+				gearboxtype,
+				forshort
+			from
+				car_gearbox_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+	</select>
+
+	<!--删除指定id的变速箱信息-->
+	<!--void deleteOneGearboxPropertyValue(Integer id);-->
+	<delete id="deleteOneGearboxPropertyValue">
+			delete
+				from
+					car_gearbox_propertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改变速箱信息-->
+	<!--void updateOneGearboxPropertyValue(GearboxPropertyValue gp);-->
+	<update id="updateOneGearboxPropertyValue" parameterType="com.springboot.demo.bean.GearboxPropertyValue">
+			update
+				car_gearbox_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				blocknumber = #{blocknumber},
+				gearboxtype = #{gearboxtype},
+				forshort = #{forshort}
+			where
+				id = #{id}
+	</update>
+
+	<!--获取一个变速箱信息-->
+	<!--GearboxPropertyValue getOneGearboxPropertyValue(Integer id);-->
+	<select id="getOneGearboxPropertyValue" resultType="com.springboot.demo.bean.GearboxPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				blocknumber,
+				gearboxtype,
+				forshort
+			from
+				car_gearbox_propertyvalue
+			where
+				id = #{id}
+
+		</select>
+
+	<!--添加一个变速箱信息-->
+	<!--void addOneGearboxPropertyValue(GearboxPropertyValue gp);-->
+	<insert id="addOneGearboxPropertyValue" parameterType="com.springboot.demo.bean.GearboxPropertyValue">
+			insert into
+				car_gearbox_propertyvalue(ccategory_id,blocknumber,gearboxtype,forshort)
+				values(#{ccategoryId},#{blocknumber},#{gearboxtype},#{forshort})
+	</insert>
+
+	<!--**********************发动机**************************************-->
+
+	<!--获取指定指定id下的发动机信息-->
+	<!--List<EnginePropertyValue>  listAllEnginePropertyValue(Integer ccategoryId)-->
+	<select id="listAllEnginePropertyValue" resultType="com.springboot.demo.bean.EnginePropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				engineype,
+				displacement,
+				airintakeform,
+				cylinderarrangement,
+				numberofcylinders,
+				numberofvalvespercylinder,
+				compressionratio,
+				valvemechanism,
+				cylinderdiameter,
+				journey,
+				maxhp,
+				maximumpower,
+				maximumpowerspeed,
+				enginespecifictechnology,
+				fuelform,
+				fuellabel,
+				oilsupplyway,
+				cylinderheadmaterial,
+				cylinderbodymaterial,
+				environmentalstandard
+			from
+				car_engine_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+		</select>
+
+	<!--删除指定id的发动机-->
+	<!--void deleteOneEnginePropertyValue(Integer id)-->
+	<delete id="deleteOneEnginePropertyValue">
+			delete
+				from
+					car_engine_propertyvalue
+			where
+				id=#{id}
+	</delete>
+
+	<!--修改指定id的发动机信息-->
+	<!--void updateOneEnginePropertyValue(EnginePropertyValue ep);-->
+	<update id="updateOneEnginePropertyValue" parameterType="com.springboot.demo.bean.EnginePropertyValue">
+			update
+				car_engine_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				engineype = #{engineype},
+				displacement = #{displacement},
+				airintakeform = #{airintakeform},
+				cylinderarrangement = #{cylinderarrangement},
+				numberofcylinders = #{numberofcylinders},
+				numberofvalvespercylinder = #{numberofvalvespercylinder},
+				compressionratio = #{compressionratio},
+				valvemechanism = #{valvemechanism},
+				cylinderdiameter = #{cylinderdiameter},
+				journey = #{journey},
+				maxhp = #{maxhp},
+				maximumpower = #{maximumpower},
+				maximumpowerspeed = #{maximumpowerspeed},
+
+				enginespecifictechnology = #{enginespecifictechnology},
+				fuelform = #{fuelform},
+				fuellabel = #{fuellabel},
+				oilsupplyway = #{oilsupplyway},
+				cylinderheadmaterial = #{cylinderheadmaterial},
+				cylinderbodymaterial = #{cylinderbodymaterial},
+				environmentalstandard = #{environmentalstandard}
+			where
+				id = #{id}
+		</update>
+
+	<!--获取指定id的发动机信息-->
+	<!--EnginePropertyValue getOneEnginePropertyValue(Integer id)-->
+	<select id="getOneEnginePropertyValue" resultType="com.springboot.demo.bean.EnginePropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				engineype,
+				displacement,
+				airintakeform,
+				cylinderarrangement,
+				numberofcylinders,
+				numberofvalvespercylinder,
+				compressionratio,
+				valvemechanism,
+				cylinderdiameter,
+				journey,
+				maxhp,
+				maximumpower,
+				maximumpowerspeed,
+				enginespecifictechnology,
+				fuelform,
+				fuellabel,
+				oilsupplyway,
+				cylinderheadmaterial,
+				cylinderbodymaterial,
+				environmentalstandard
+			from
+				car_engine_propertyvalue
+			where
+				id = #{id}
+
+		</select>
+
+		<!--添加发动机信息-->
+		<!--void addOneEnginePropertyValue(EnginePropertyValue ep)-->
+		<insert id="addOneEnginePropertyValue" parameterType="com.springboot.demo.bean.EnginePropertyValue">
+			insert into
+				car_engine_propertyvalue(ccategory_id,engineype,displacement,airintakeform,cylinderarrangement,numberofcylinders,numberofvalvespercylinder,
+					compressionratio,valvemechanism,cylinderdiameter,journey,maxhp,maximumpower,maximumpowerspeed,enginespecifictechnology,fuelform,
+					fuellabel,oilsupplyway,cylinderheadmaterial,cylinderbodymaterial,environmentalstandard)
+				values(#{ccategoryId},#{engineype},#{displacement},#{airintakeform},#{cylinderarrangement},#{numberofcylinders},#{numberofvalvespercylinder},
+					#{compressionratio},#{valvemechanism},#{cylinderdiameter},#{journey},#{maxhp},#{maximumpower},#{maximumpowerspeed},#{enginespecifictechnology},
+					#{fuelform},#{fuellabel},#{oilsupplyway},#{cylinderheadmaterial},#{cylinderbodymaterial},#{environmentalstandard}
+				)
+		</insert>
+
+
+	<!--*************************车身************************************-->
+	<!--获取三级种类id下所有车身信息-->
+	<!--List<BodyworkPropertyvalue>  listAllBodyworkPropertyvalue(Integer ccategoryId);-->
+	<select id="listAllBodyworkPropertyvalue" resultType="com.springboot.demo.bean.BodyworkPropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				length,
+				width,
+				height,
+				wheelbase,
+				frontgauge,
+				trackrear,
+				minimumgroundclearance,
+				bodystructure,
+				doornumber,
+				seating,
+				oiltankcapacity,
+				capacityofbaggagecompartment,
+				curbweight
+			from
+				car_bodywork_propertyvalue
+			where
+				ccategory_id = #{ccategoryId}
+		</select>
+
+	<!--删除车身信息-->
+	<!--void deleteOneBodyworkPropertyvalue(Integer id)-->
+	<delete id="deleteOneBodyworkPropertyvalue">
+			delete
+				from
+					car_bodywork_propertyvalue
+			where
+				id=#{id}
+		</delete>
+
+	<!--新增车身信息-->
+	<!-- void addOneBodyworkPropertyvalue(BodyworkPropertyvalue bp);-->
+	<insert id="addOneBodyworkPropertyvalue" parameterType="com.springboot.demo.bean.BodyworkPropertyvalue">
+			insert into
+				car_bodywork_propertyvalue(ccategory_id,length,width,height,wheelbase,frontgauge,trackrear,minimumgroundclearance,
+				bodystructure,doornumber,seating,oiltankcapacity,capacityofbaggagecompartment,curbweight)
+				values(#{ccategoryId},#{length},#{width},#{height},#{wheelbase},#{frontgauge},#{trackrear},
+					#{minimumgroundclearance},#{bodystructure},#{doornumber},#{seating},#{oiltankcapacity},
+					#{capacityofbaggagecompartment},#{curbweight}
+				)
+		</insert>
+
+	<!--获取指定车身信息-->
+	<!-- BodyworkPropertyvalue getOneBodyworkPropertyvalue(Integer id)-->
+	<select id="getOneBodyworkPropertyvalue" resultType="com.springboot.demo.bean.BodyworkPropertyvalue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				length,
+				width,
+				height,
+				wheelbase,
+				frontgauge,
+				trackrear,
+				minimumgroundclearance,
+				bodystructure,
+				doornumber,
+				seating,
+				oiltankcapacity,
+				capacityofbaggagecompartment,
+				curbweight
+			from
+				car_bodywork_propertyvalue
+			where
+				id = #{id}
+
+		</select>
+
+	<!--修改车身信息-->
+	<!--void updateOneBodyworkPropertyvalue(BodyworkPropertyvalue bp)-->
+	<update id="updateOneBodyworkPropertyvalue" parameterType="com.springboot.demo.bean.BodyworkPropertyvalue">
+			update
+				car_bodywork_propertyvalue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				length = #{length},
+				width = #{width},
+				height = #{height},
+				wheelbase = #{wheelbase},
+				frontgauge = #{frontgauge},
+				trackrear = #{trackrear},
+				minimumgroundclearance = #{minimumgroundclearance},
+				bodystructure = #{bodystructure},
+
+				doornumber = #{doornumber},
+				seating = #{seating},
+				oiltankcapacity = #{oiltankcapacity},
+				capacityofbaggagecompartment = #{capacityofbaggagecompartment},
+				curbweight = #{curbweight}
+			where
+				id = #{id}
+		</update>
+
+		<!--***************基本参数****************************-->
+		<!--获取所有基本参数的属性值-->
+		<!--List<BasicParamPropertyValue> listAllBasicParamPropertyValue(Integer ccategoryId);-->
+		<select id="listAllBasicParamPropertyValue" resultType="com.springboot.demo.bean.BasicParamPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				manufacturer,
+				rank,
+				energy_type energyType,
+				environmental_protection environmentalProtection,
+				mark_time markTime,
+				max_power maxPower,
+				max_torque maxTorque,
+				engine,
+				gearbox,
+				length_width_height lengthWidthHeight,
+				body_structure bodyStructure,
+				maximum_speed maximumSpeed,
+				official_speed officialSpeed,
+				measured_speed measuredSpeed,
+				measured_braking measuredBraking,
+				cfcomoiat,
+				measured_consumption measuredConsumption,
+				vehicle_warranty vehicleWarranty
+			from
+				car_basicparam_propertyValue
+			where
+				ccategory_id = #{ccategoryId}
+		</select>
+
+		<!--删除指定id的属性值-->
+		<!--void deleteOneParamPropertyValue(Integer id);-->
+		<delete id="deleteOneParamPropertyValue">
+			delete
+				from
+					car_basicparam_propertyValue
+			where
+				id=#{id}
+		</delete>
+
+		<!--修改基本参数数据-->
+		<!--void updateOneParamPropertyValue(BasicParamPropertyValue bpp);-->
+		<update id="updateOneParamPropertyValue" parameterType="com.springboot.demo.bean.BasicParamPropertyValue">
+			update
+				car_basicparam_propertyValue
+			set
+				id=#{id},
+				ccategory_id = #{ccategoryId},
+				manufacturer = #{manufacturer},
+				rank = #{rank},
+				energy_type = #{energyType},
+				environmental_protection = #{environmentalProtection},
+				mark_time = #{markTime},
+				max_power = #{maxPower},
+				max_torque = #{maxTorque},
+				engine = #{engine},
+
+				gearbox = #{gearbox},
+				length_width_height = #{lengthWidthHeight},
+				body_structure = #{bodyStructure},
+				max_torque = #{maxTorque},
+				maximum_speed = #{maximumSpeed},
+
+				official_speed = #{officialSpeed},
+				measured_speed = #{measuredSpeed},
+				measured_braking = #{measuredBraking},
+				cfcomoiat = #{cfcomoiat},
+				measured_consumption = #{measuredConsumption},
+				vehicle_warranty= #{vehicleWarranty}
+			where id = #{id}
+		</update>
+
+		<!--通过id获取某一个属性值-->
+		<!-- BasicParamPropertyValue getOneParamPropertyValue(Integer id);-->
+		<select id="getOneParamPropertyValue" resultType="com.springboot.demo.bean.BasicParamPropertyValue">
+			select
+				id,
+				ccategory_id ccategoryId,
+				manufacturer,
+				rank,
+				energy_type energyType,
+				environmental_protection environmentalProtection,
+				mark_time markTime,
+				max_power maxPower,
+				max_torque maxTorque,
+				engine,
+				gearbox,
+				length_width_height lengthWidthHeight,
+				body_structure bodyStructure,
+				maximum_speed maximumSpeed,
+				official_speed officialSpeed,
+				measured_speed measuredSpeed,
+				measured_braking measuredBraking,
+				cfcomoiat,
+				measured_consumption measuredConsumption,
+				vehicle_warranty vehicleWarranty
+			from
+				car_basicparam_propertyValue
+			where
+				id = #{id}
+
+		</select>
+
+	<!--添加参数属性值-->
+		<!--void addOneParamPropertyValue(BasicParamPropertyValue bpp);-->
+		<insert id="addOneParamPropertyValue" parameterType="com.springboot.demo.bean.BasicParamPropertyValue">
+			insert into
+				car_basicparam_propertyValue(ccategory_id,manufacturer,rank,energy_type,environmental_protection,
+					mark_time,max_power,max_torque,engine,gearbox,length_width_height,body_structure,maximum_speed,
+					official_speed,measured_speed,measured_braking,cfcomoiat,measured_consumption,vehicle_warranty)
+				values(#{ccategoryId},#{manufacturer},#{rank},#{energyType},#{environmentalProtection},#{markTime},#{maxPower},
+					#{maxTorque},#{engine},#{gearbox},#{lengthWidthHeight},#{bodyStructure},#{maximumSpeed},#{officialSpeed},
+					#{measuredSpeed},#{measuredBraking},#{cfcomoiat},#{measuredConsumption},#{vehicleWarranty}
+				)
+
+		</insert>
+
+
+</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

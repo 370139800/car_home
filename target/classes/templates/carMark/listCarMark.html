@@ -1,0 +1,87 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('汽车标志列表')">
+
+</head>
+<body>
+    <script>
+        $(function(){
+            var dataVue={
+                uri:"carMark",
+                pagination:{},
+                beans:[],
+                bean:{id:0,name:'',source:''}
+            };
+            var vue = new Vue({
+                el:"#carMarkInfo",
+                data:dataVue,
+                mounted:function(){  //当vue加载成功执行它
+                    this.list(1);
+                },
+                methods : {
+                    //获取用户信息
+                    list : function(start,name){
+                        if(name==undefined){
+                            name='';
+                        }
+                        var url = this.uri + "/listCarMark?start="+start+"&name="+name;
+                        axios.get(url).then(function(response) {
+                            vue.pagination=response.data;
+                            vue.beans=response.data.list;
+                        });
+                    },
+                    deleteBean : function (id) {
+                        if(!checkDeleteLink()){
+                            return;
+                        }
+                        var url = this.uri + '/deleteOneCarMark?id='+id;
+                        axios.get(url).then(function(response){
+                            location.reload();
+                        })
+                    },
+                    getMatchCarmark : function () {
+                        this.list(1,this.bean.name);
+                    },
+                    jump : function (page) {
+                        jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                    },
+                    jumpByNumber : function(start){
+                        jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                    }
+                }
+            });
+        });
+    </script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+<div id="carMarkInfo" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+    <div style="margin-top: 100px" >
+        <input type="text" placeholder="请输入车标名" v-model.trim="bean.name" class="form-control" style="width:300px;margin-left:35%" @keyup.enter="getMatchCarmark()"/>
+        <button class="btn btn-default" type="button" style="margin-left:58%;margin-top: -35px;" @click="getMatchCarmark()">查询</button>
+    </div>
+    <div id="carMarkInfo_pageList">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+                <th>id</th>
+                <th>操作</th>
+                <th>图片</th>
+                <th>车标名</th>
+            </thead>
+            <tbody>
+            <tr v-for='b in beans'>
+                <td>{{b.id}}</td>
+                <td>
+                    <a :href="'editCarMark?id='+b.id" style="font-size:14px;text-decoration:none ">编辑</a>
+                    <a href="#" style="font-size:14px;text-decoration:none" @click="deleteBean(b.id)">删除</a>
+                </td>
+                <td><a :href="'updateCarMarkImage?id='+b.id" style="font-size:14px;text-decoration:none "><img :src="'image/carMark/small_Image/'+b.id+'.jpg'" class="img-circle" height="35px"/></a></td>
+                <td><a :href="'showCarMarkDetail?id='+b.id" style="font-size:14px;color: black;text-decoration:none ">{{b.name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="pageNav1">
+        <div  th:replace="include/admin/adminPage::html" ></div>
+    </div>
+</div>
+</body>
+</html>

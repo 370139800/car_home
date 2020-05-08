@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('编辑基本参数属性信息')"></head>
+<body>
+<script>
+    $(function () {
+        var dataVue = {
+            uri:'propertyValue',
+            bean:{id:0,ccategoryId:0,manufacturer:'',rank:'',energyType:'',environmentalProtection:'',markTime:null,maxPower:0,maxTorque:0,engine:'',
+                gearbox:'',lengthWidthHeight:'',bodyStructure:'',maximumSpeed:0.0,officialSpeed:0,measuredSpeed:0,measuredBraking:0.0,cfcomoiat:0.0,
+                measuredConsumption:0.0,vehicleWarranty:''
+            },
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new  Vue({
+            el : '#editbasicParamPropertyValue',
+            data : dataVue,
+            mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+                this.getbasicParamPropertyValueMsg();
+            },
+            methods : {
+                //获取汽车种类信息
+                getbasicParamPropertyValueMsg : function () {
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    this.grantParentId = grantParentId;
+
+                    var master = getUrlParms('master'); //显示一级分类id
+                    this.master = master;
+
+                    var name = getUrlParms('name');
+                    this.name = name;
+
+                    var id = getUrlParms('id');
+                    var url = this.uri + "/getOneParamPropertyValue?id="+id;
+                    axios.get(url).then(function (response) {
+                        vue.bean =  response.data;
+                    })
+                },
+                //修改汽车种类细信息
+                changebasicParamPropertyValueMsg : function(){
+                    var url = this.uri + '/updateOneParamPropertyValue';
+                    axios.post(url,vue.bean).then(function(response){
+                        alert(response.data);
+                        location.reload();
+                    });
+                },
+                back : function(){
+                    location.href = "listBasicParamPropertyValue?ccategoryId="+vue.bean.ccategoryId+"&grantParentId="+vue.grantParentId+"&master="+vue.master+"&name="+vue.name;
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    #editbasicParamPropertyValue{
+        width: 800px;
+        height: 1100px;
+        margin: 0 auto;
+    }
+    .panel-default{
+        height: 1100px;
+    }
+</style>
+<div id="editbasicParamPropertyValue" >
+    <div class="panel panel-default">
+        <div class="panel-heading">编辑基本参数信息</div>
+        <div class="panel-body">
+            <table   width="700px" height="1000px">
+                <tr>
+                    <td>ID:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.id" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>分类id:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.ccategoryId" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>厂商:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.manufacturer"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>级别:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.rank"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>能源类型:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.energyType"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>环保标准:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.environmentalProtection"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>最大功率:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.maxPower"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>最大扭矩:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.maxTorque"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>发动机:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.engine"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>变速箱:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.gearbox"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>长*宽*高(mm):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.lengthWidthHeight"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>车身结构:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.bodyStructure"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>最高车速(km/h:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.maximumSpeed"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>官方0-100km/h加速(s):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.officialSpeed"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>实测0-100km/h加速(s):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.measuredSpeed"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>实测0-100km/h制动(m):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.measuredBraking"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>工信部综合油耗(L/100km):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.cfcomoiat"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>实测油耗(L/100km):</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.measuredConsumption"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>整车质保:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.vehicleWarranty"   />
+                    </td>
+                </tr>
+
+                <tr >
+                    <td style="position: absolute;left: 600px"><button type="button" class="btn btn-sm" @click="changebasicParamPropertyValueMsg()">提交</button></td>
+                    <td style="position: absolute;left: 750px"><button type="button" class="btn btn-sm" @click="back()">返回</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head   th:include="include/admin/adminHeader::html('修改头像')"></head>
+    <body>
+        <style>
+            #showImage{
+                margin-left: 40%;
+                margin-top: 25px
+            }
+            #updateImageOperate{
+                margin-left: 35%;
+                margin-top: 25px
+            }
+            #operateImage{
+                margin-top: 15px;
+                margin-left: 10px;
+            }
+            #operateImage a{
+                margin-left: 15px;
+            }
+        </style>
+        <script >
+            $(function () {
+               var dataVue = {
+                   uri:'user',
+                   id:0,
+                   file:null
+               };
+               var id =  getUrlParms("id");
+               dataVue.id = id ;
+                var vue = new Vue({
+                    el : "#updateUserImage",
+                    data : dataVue,
+                    methods : {
+                        //修改用户头像
+                        update : function(){
+                            if(this.file == null){
+                                alert("请选择图片");
+                                return;
+                            }
+                            var url = this.uri + "/updateImage";
+                            var formData = new FormData();
+                            formData.append("image",this.file);
+                            formData.append("id",this.id); 
+                          	axios.post(url,formData).then(function(response) {
+                                location.reload();  //实现页面重新加载
+
+                            }); 
+                        },
+                        //返回
+                        back : function () {
+                            location.href = "listUserPage";
+                        },
+                        /* 获取文件,赋值属性 */
+                        getFile:function(event){
+                            this.file = event.target.files[0];
+
+                        }
+                    }
+                })
+            });
+        </script>
+        <div th:replace="include/admin/navList :: nav"></div>
+        <div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+            <div id="updateUserImage" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+                <div class="panel panel-default" style="width: 800px; margin: 0 auto; margin-top: 150px">
+                    <div class="panel-heading">修改用户头像</div>
+                    <div class="panel-body">
+                        <div id="showImage">
+                            <img alt="头像" :src="'image/user/small_Image/'+id+'.jpg'" class="img-circle" >
+                        </div>
+                        <div id="updateImageOperate">
+                            <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
+                            <div id="operateImage">
+                                <a href="#nowhere"  @click="update" class="btn btn-primary">提交</a>
+                                <a href="#nowhere"  @click="back" class="btn btn-primary">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div>
+    </body>
+</html>

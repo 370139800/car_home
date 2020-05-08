@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.CarCategoryDao">
+
+		<!--获取种类二级分类-->
+		<!--List<CarCategory> listSecondCarCategory(Integer parentId);-->
+		<select id="listSecondCarCategory" resultType="com.springboot.demo.bean.CarCategory">
+			select
+				id,
+				parent_id parentId,
+				name
+			from
+				car_category
+			where
+				parent_id = #{parentId}
+		</select>
+
+		<!--获取种类一级分类-->
+		<!--List<CarCategory> listStairCarCategory();-->
+		<select id="listStairCarCategory" resultType="com.springboot.demo.bean.CarCategory">
+			select
+				id,
+				parent_id parentId,
+				name
+			from
+				car_category
+			where
+				parent_id is NULL or parent_id = 0
+		</select>
+
+		<!--添加汽车种类-->
+		<!--void addCarCategory(CarCategory carCategory);-->
+		<insert id="addCarCategory" parameterType="com.springboot.demo.bean.CarCategory">
+			insert
+				into car_category(parent_id,name)
+			values
+				(#{parentId},#{name})
+
+		</insert>
+
+		<!--通过id删除汽车分类-->
+		<!--void deleteCarCategory(Integer id);-->
+		<delete id="deleteCarCategory">
+			delete from
+				car_category
+			where
+				id = #{id}
+		</delete>
+
+		<!--修改汽车分类信息-->
+		<!--void updateCarCategory(CarCategory carCategory);-->
+		<update id="updateCarCategory" parameterType="com.springboot.demo.bean.CarCategory">
+			update
+				car_category
+			set
+				parent_id = #{parentId} ,name = #{name}
+			where
+				id = #{id}
+		</update>
+
+		<!--获取一个汽车分类-->
+		<!--CarCategory getOneCarCategory(Integer id);-->
+		<select id="getOneCarCategory" resultType="com.springboot.demo.bean.CarCategory">
+			select
+				id,
+				parent_id parentId,
+				name
+			from
+				car_category
+			where
+				id = #{id}
+		</select>
+
+	</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

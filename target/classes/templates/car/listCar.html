@@ -1,0 +1,171 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('汽车标志列表')">
+</head>
+<body>
+<script>
+    $(function(){
+        var dataVue={
+            uri:"car",
+            pagination:{},
+            beans:[],
+            bean:{id:0,ccategoryId:0,name:'',vendorquot:'',dealerquot:'',output:0,sales:0,radio:0,state:1},
+            grantParentId:0,
+            master:0
+        };
+        var vue = new Vue({
+            el:"#carInfo",
+            data:dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list(1);
+            },
+            methods : {
+                //获取用户信息
+                list : function(start){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    var master = getUrlParms('master'); //显示二级分类页面,一级id
+                    this.grantParentId = grantParentId;
+                    this.master = master;
+                    var ccategoryId = getUrlParms("ccategoryId");
+                    this.bean.ccategoryId = ccategoryId;
+                    var url = this.uri + "/listAllCar?ccategoryId="+ccategoryId+"&start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination=response.data;
+                        vue.beans=response.data.list;
+                    });
+                },
+                deleteBean : function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + '/deleteOneCar?id='+id;
+                    axios.get(url).then(function(response){
+                        location.reload();
+                    })
+                },
+                add :function(){
+                    if(checkEmpty(this.bean.name,"车名")){ //判空
+                        return;
+                    }
+                    if(checkEmpty(this.bean.vendorquot,"厂商报价")){ //判空
+                        return;
+                    }
+                    if(checkEmpty(this.bean.dealerquot,"经销商报价")){ //判空
+                        return;
+                    }
+                    if(!isNumber(this.bean.vendorquot,"厂商报价")){
+                        return;
+                    }
+                    if(!isNumber(this.bean.dealerquot,"经销商报价")){
+                        return;
+                    }
+                    if(!isNumber(this.bean.output,"产量")){
+                        return;
+                    }
+                    if(!isNumber(this.bean.sales,"销售量")){
+                        return;
+                    }
+                    var url = this.uri + "/addOneCar";
+                    axios.post(url,this.bean).then(function(response){
+                        location.reload();
+                    })
+
+                },
+                jump : function (page) {
+                    jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                },
+                jumpByNumber : function(start){
+                    jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                }
+            }
+        });
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+<div id="carInfo" style="border: 1px solid #bdd7f2;width: 1325px;height: 667px;margin-top:50px;margin-left: 210px ">
+    <div style="float: right;margin-top: 3px;margin-right: 20px">
+        <a :href="'listThridCarCategory?parentId='+this.grantParentId+'&grantParent='+master"><button type="button" class="btn btn-info">返回上一级</button></a>
+    </div>
+    <div id="carInfo_pageList">
+        <table class="table table-striped table-bordered table-hover  table-condensed" style="font-size: 12px">
+            <thead>
+                <th>id</th>
+                <th>操作</th>
+                <th>车图</th>
+                <th>款式</th>
+                <th>厂商报价</th>
+                <th>经销商报价</th>
+                <th>产量</th>
+                <th>销量</th>
+                <th>销售率</th>
+                <th>汽车状态</th>
+            </thead>
+            <tbody>
+                <tr v-for='b in beans'>
+                    <td>{{b.id}}</td>
+                    <td>
+                        <a :href="'editCar?id='+b.id+'&grantParentId='+grantParentId+'&master='+master" style="font-size:12px;text-decoration:none ">编辑</a>
+                        <a href="#" style="font-size:12px;text-decoration:none" @click="deleteBean(b.id)" >删除</a>
+                    </td>
+                    <td><a :href="'addCarImage?ccarId='+b.id+'&grantParentId='+grantParentId+'&master='+master+'&ccategoryId='+b.ccategoryId" style="font-size:13px;text-decoration:none" >车图</a></td>
+                    <td>{{b.name}}</td>
+                    <td>{{b.vendorquot}}万</td>
+                    <td>{{b.dealerquot}}万</td>
+                    <td>{{b.output}}台</td>
+                    <td>{{b.sales}}台</td>
+                    <td>{{b.radio}}%</td>
+                    <td v-if="b.state==1">在售</td>
+                    <td v-if="b.state==0">停售</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="pageNav4">
+        <div  th:replace="include/admin/adminPage::html" ></div>
+    </div>
+    <div id="addcar">
+        <div class="panel panel-default">
+            <div class="panel-heading">新增汽车</div>
+            <div class="panel-body">
+                <table class="addTable" height="210px" width="280px" style="font-size:12px ">
+                    <tr>
+                        <td style="font-size:11px">款式: </td>
+                        <td><input   v-model.trim="bean.name" type="text" class="form-control" style="height: 20px;font-size:12px"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px">厂商报价: </td>
+                        <td><input   v-model.trim="bean.vendorquot" type="text" class="form-control" style="height: 20px;font-size:12px"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px">经销商报价: </td>
+                        <td><input   v-model.trim="bean.dealerquot" type="text" class="form-control" style="height: 20px;font-size:12px"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px">产量: </td>
+                        <td><input   v-model.trim="bean.output" type="text" class="form-control" style="height: 20px;font-size:12px"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px">销售量: </td>
+                        <td><input   v-model.trim="bean.sales" type="text" class="form-control" style="height: 20px;font-size:12px"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px">汽车状态: </td>
+                        <td>
+                            <select v-model.trim="bean.state" class="form-control" style="height: 30px;font-size:10px">
+                                <option value="1">在售</option>
+                                <option value="0">停售</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="submitTR" >
+                        <td colspan="2" align="center">
+                            <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

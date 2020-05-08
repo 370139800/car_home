@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.CarDao">
+
+		<!--获取某一个三级种类id下的所有汽车-->
+		<!--List<Car> listAllCar(Integer ccategoryId);-->
+		<select id="listAllCar" resultType="com.springboot.demo.bean.Car">
+				select
+					id,
+					ccategory_id ccategoryId,
+					name,
+					vendorquot,
+					dealerquot,
+					output,
+					sales,
+					state,
+					CASE when output=0 then 0 ELSE round((sales/output)*100,2) END AS radio
+				from
+					car_car
+				where
+					ccategory_id = #{ccategoryId}
+			</select>
+
+		<!--删除指定id汽车-->
+		<!-- void deleteOneCar(Integer id);-->
+		<delete id="deleteOneCar">
+				delete from
+					car_car
+				where
+					id = #{id}
+		</delete>
+
+		<!--添加一辆车-->
+		<!--void addOneCar(Car car);-->
+		<insert id="addOneCar" parameterType="com.springboot.demo.bean.Car">
+			insert into
+				car_car(ccategory_id,name,vendorquot,dealerquot,output,sales,state)
+				values(#{ccategoryId},#{name},#{vendorquot},#{dealerquot},#{output},#{sales},#{state})
+		</insert>
+
+		<!--获取一辆车信息-->
+		<!--Car getOneCar(Integer id);-->
+		<select id="getOneCar" resultType="com.springboot.demo.bean.Car">
+				select
+					id,
+					ccategory_id ccategoryId,
+					name,
+					vendorquot,
+					dealerquot,
+					output,
+					sales,
+					state
+				from
+					car_car
+				where
+					id = #{id}
+			</select>
+
+		<!--修改汽车信息-->
+		<!-- void updateOneCar(Car car);-->
+		<update id="updateOneCar" parameterType="com.springboot.demo.bean.Car">
+            update
+               car_car
+            set
+                name = #{name},vendorquot = #{vendorquot},dealerquot = #{dealerquot},output=#{output},sales=#{sales},state= #{state}
+            where
+                id = #{id}
+        </update>
+	</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

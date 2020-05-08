@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head   th:include="include/admin/adminHeader::html('上传视频')"></head>
+<body>
+<style>
+    #showImage{
+        margin-left: 40%;
+        margin-top: 25px
+    }
+    #updateImageOperate{
+        margin-left: 35%;
+        margin-top: 25px
+    }
+    #operateImage{
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+    #operateImage a{
+        margin-left: 15px;
+    }
+</style>
+<script >
+    $(function () {
+        var dataVue = {
+            uri:'carCategory',
+            file:null,
+            id:0,
+            parentId:0,
+            garentParent:0
+        };
+        var vue = new Vue({
+            el : "#vidio",
+            data : dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list();
+            },
+            methods : {
+                list : function(){
+                    var id =  getUrlParms("id");
+                    this.id = id ;
+                    var parentId = getUrlParms("parentId");
+                    this.parentId = parentId;
+                    var garentParent =  getUrlParms("garentParent");
+                    this.garentParent = garentParent;
+                },
+                add : function(){
+                    if(this.file == null ||this.file==''){
+                        alert("请选择视频");
+                        return;
+                    }
+                    var v = $("#reviewFile").val();
+                    if(v.substring(v.lastIndexOf("."),v.length).toLowerCase() == ".mp4") {
+                        var url = this.uri + "/addVidio";
+                        var formData = new FormData();
+                        formData.append("vidio",this.file);  //视频
+                        formData.append("id",this.id);   //当前系列id
+                        axios.post(url,formData).then(function(response) {
+                            alert(response.data);
+                            location.reload();  //实现页面重新加载
+                        })
+                    }else{
+                        alert("请选择正确格式");
+                        return;
+                    }
+                },
+                /* 获取文件,赋值属性 */
+                getFile:function(event){
+                    this.file = event.target.files[0];
+                },
+                //返回
+                back : function () {
+                    location.href = "listThridCarCategory?parentId="+vue.parentId+"&grantParent="+vue.garentParent;
+                }
+            }
+        })
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+<div id="vidio" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+    <div class="panel panel-default" style="width: 800px; margin: 0 auto; margin-top: 150px">
+        <div class="panel-heading">上传视频</div>
+        <div class="panel-body">
+            <div id="updateImageOperate">
+                <input id="reviewFile"  type="file" name="review" @change="getFile($event)" />
+                <div id="operateImage">
+                    <a href="#nowhere"  @click="add()" class="btn btn-primary">提交</a>
+                    <a href="#nowhere"  @click="back" class="btn btn-primary">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+</body>
+</html>

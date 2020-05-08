@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head   th:include="include/admin/adminHeader::html('添加车图')"></head>
+    <body>
+        <script >
+            $(function () {
+               var dataVue = {
+                   uri:'carImage',
+                   beans:[],
+                   bean:{id:0,ccarId:0},
+                   file:null,
+                   count:0,
+                   grantParentId:0,
+                   master:0,
+                   ccategoryId:0
+               };
+                var vue = new Vue({
+                    el : "#addCarImage",
+                    data : dataVue,
+                    mounted:function(){  //当vue加载成功执行它
+                        this.list();
+                    },
+                    methods : {
+                        //显示所有车图
+                        list: function () {
+                            var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                            var master = getUrlParms('master'); //显示二级分类页面,一级id
+                            var ccategoryId =  getUrlParms('ccategoryId'); //三级车系id
+                            this.grantParentId = grantParentId;
+                            this.master = master;
+                            this.ccategoryId =  ccategoryId;
+                            var ccarId = getUrlParms("ccarId");
+                            this.bean.ccarId = ccarId;
+                            var url = this.uri + "/listAllCarImage?ccarId=" + ccarId;
+                            axios.get(url).then(function (response) {
+                                vue.beans = response.data;
+                            });
+                        },
+                        /* 获取文件,赋值属性 */
+                        getFile:function(event){
+                            this.file = event.target.files[0];
+
+                        },
+                        //添加
+                        add : function(){
+                            if(this.file == null){
+                                alert("请选择图片");
+                                return;
+                            }
+                            //判断图片数量
+                            var url1 = this.uri + "/getCountCarImage?ccarId="+this.bean.ccarId;
+                            axios.get(url1).then(function (response) {
+                                this.count = response.data;
+
+                            });
+                            if(parseInt(count)>=5){
+                                alert("最多只能添加五张");
+                                return;
+                            }
+                            //添加图片
+                            var url = this.uri + "/addCarImage";
+                            var formData = new FormData();
+                            formData.append("image",this.file);
+                            formData.append("ccarId",this.bean.ccarId);
+                            axios.post(url,formData).then(function(response) {
+                                location.reload();  //实现页面重新加载
+
+                            });
+                        },
+                        //删除
+                        deleteBean  : function(id){
+                            var url = this.uri + "/deleteCarImage?id="+id;
+                            axios.get(url).then(function (response) {
+                                location.reload();  //实现页面重新加载
+                            });
+                        },
+                        back :function () {
+                            location.href ="listCar?grantParentId="+vue.grantParentId+'&master='+vue.master+'&ccategoryId='+vue.ccategoryId;
+                        }
+                    }
+                })
+            });
+        </script>
+        <div th:replace="include/admin/navList :: nav"></div>
+        <div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+        <div id="addCarImage" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+            <div style="float: right;margin-top: 5px;margin-right: 5px"><button type="button" class="btn btn-success" @click="back()">返回</button></div>
+            <div style="margin-top: 80px;overflow:hidden;margin-left: 5%;width: 90%;height: 350px">
+                <div v-for="b in beans" style="width: 230px;height:300px;float: left;">
+                    <div style="margin-left:10%">
+                        <img :src="'image/car/middle_car/'+b.id+'.jpg'" />
+                    </div>
+                    <div style="margin-top: 30px;margin-left: 30%">
+                        <button type="button" class="btn btn-success" @click="deleteBean(b.id)">删除</button>
+                    </div>
+                </div>
+            </div>
+            <div style="position: fixed;width: 100%;bottom: 0">
+                <div class="panel panel-default" style="height: 300px">
+                    <div class="panel-heading">添加车图</div>
+                    <div class="panel-body">
+                        <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" style="margin:0 auto;margin-top: 50px" />
+                        <div id="operateImage" style="position: absolute;bottom: 100px;left: 45%">
+                            <a href="#nowhere"  @click="add" class="btn btn-primary"  >添加</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div>
+    </body>
+</html>

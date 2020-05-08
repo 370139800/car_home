@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('编辑辅助设备操控属性信息')"></head>
+<body>
+<script>
+    $(function () {
+        var dataVue = {
+            uri:'propertyValue',
+            bean:{id:0,ccategoryId:0,parkingradar:'',auxiliaryimage:'',backawacssystem:'',cruisesystem:'',patternswitch:'',autoparkina:'',enginestartandstoptechnology:'',autobreak:'',
+                uphillassist:'',abruptslowdescent:'',variablesuspension:'',airsuspension:'',batteryinducedsuspension:'',variablesteerratio:'',centraldifferentiallocking:'',integralactivesteer:'',
+                differentlock:'',wadsensor:''
+            },
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new  Vue({
+            el : '#editManipulationPropertyValue',
+            data : dataVue,
+            mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+                this.getManipulationPropertyValueMsg();
+            },
+            methods : {
+                //获取辅助设备操控
+                getManipulationPropertyValueMsg : function () {
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    this.grantParentId = grantParentId;
+                    var master = getUrlParms('master'); //显示一级分类id
+                    this.master = master;
+                    var name = getUrlParms('name');
+                    this.name = name;
+                    var id = getUrlParms('id');
+                    var url = this.uri + "/getOneManipulationPropertyValue?id="+id;
+                    axios.get(url).then(function (response) {
+                        vue.bean =  response.data;
+                    })
+                },
+                //修改辅助设备操控
+                changeManipulationPropertyValueMsg : function(){
+                    var url = this.uri + '/updateOneManipulationPropertyValue';
+                    axios.post(url,vue.bean).then(function(response){
+                        alert(response.data);
+                        location.reload();
+                    });
+                },
+                back : function(){
+                    location.href = "listManipulationPropertyValue?ccategoryId="+vue.bean.ccategoryId+"&grantParentId="+vue.grantParentId+"&master="+vue.master+"&name="+vue.name;
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    #editManipulationPropertyValue{
+        width: 800px;
+        height: 1100px;
+        margin: 0 auto;
+    }
+    .panel-default{
+        height: 1100px;
+    }
+</style>
+<div id="editManipulationPropertyValue" >
+    <div class="panel panel-default">
+        <div class="panel-heading">编辑辅助设备操控信息</div>
+        <div class="panel-body">
+            <table   width="700px" height="1000px">
+                <tr>
+                    <td>ID:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.id" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>分类id:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.ccategoryId" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>前/后驻车雷达:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.parkingradar"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>驾驶辅助影像:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.auxiliaryimage"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>倒车车侧预警系统:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.backawacssystem"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>巡航系统:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.cruisesystem"   />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>驾驶模式切换:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.patternswitch"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>自动泊车入位:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.autoparkina"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>发动机启停技术:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.enginestartandstoptechnology"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>自动驻车:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.autobreak"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>上坡辅助:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.uphillassist"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>陡坡缓降:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.abruptslowdescent"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>可变悬架功能:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.variablesuspension"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>空气悬架:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.airsuspension"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>电池感应悬架:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.batteryinducedsuspension"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>可变转向比:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.variablesteerratio"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>中央差速器锁止功能:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.centraldifferentiallocking"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>整体主动转向系统:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.integralactivesteer"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>限滑差速器/差速锁:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.differentlock"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>涉水感应系统:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.wadsensor"   />
+                    </td>
+                </tr>
+                <tr >
+                    <td style="position: absolute;left: 600px"><button type="button" class="btn btn-sm" @click="changeManipulationPropertyValueMsg()">提交</button></td>
+                    <td style="position: absolute;left: 750px"><button type="button" class="btn btn-sm" @click="back()">返回</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

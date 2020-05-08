@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('编辑二级车型信息')"></head>
+<body>
+<script>
+    $(function () {
+        var dataVue = {
+            uri:'carCategory',
+            bean:{id:0,parentId:0,name:''}
+        };
+        var vue = new  Vue({
+            el : '#editCarCategory',
+            data : dataVue,
+            mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+                this.getCarCategory();
+            },
+            methods : {
+                //获取汽车种类信息
+                getCarCategory : function () {
+                    var id = getUrlParms('id');
+                    var url = this.uri + "/getOneCarCategory?id="+id;
+                    axios.get(url).then(function (response) {
+                        vue.bean =  response.data;
+                    })
+                },
+                //修改二级汽车种类信息
+                changeCarCategoryMsg : function(){
+                    if(checkEmpty(this.bean.name,"二级种类名")){ //判空
+                        return;
+                    }
+                    var url = this.uri + '/updateCarCategory';
+                    axios.post(url,vue.bean).then(function(response){
+                        alert(response.data);
+                        location.reload();
+                    });
+                },
+                back : function(){
+                    location.href = "listSecondCarCategory?parentId="+vue.bean.parentId;
+                }
+            }
+        });
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px" ></div>
+<div id="editCarCategory" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+    <div class="panel panel-default" style="width: 800px;margin: 0 auto;margin-top: 100px">
+        <div class="panel-heading">编辑二级车型信息</div>
+        <div class="panel-body" style="height: 450px">
+            <table   width="700px" height="350px">
+                <tr>
+                    <td>ID:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.id" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>父级ID:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.parentId" readonly="readonly"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>二级分类名:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.name"   />
+                    </td>
+                </tr>
+                <tr >
+                    <td style="position: absolute;left: 750px"><button type="button" class="btn btn-sm" @click="changeCarCategoryMsg()">提交</button></td>
+                    <td style="position: absolute;left: 900px"><button type="button" class="btn btn-sm" @click="back()">返回</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

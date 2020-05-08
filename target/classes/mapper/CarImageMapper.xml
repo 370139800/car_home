@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+	<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+	<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+	<mapper namespace="com.springboot.demo.dao.CarImageDao">
+
+		<!--获取当前汽车下的所有图片-->
+		<!--List<CarImage> listAllCarImage(Integer ccarId);-->
+		<select id="listAllCarImage" resultType="com.springboot.demo.bean.CarImage">
+				select
+					id,
+					ccar_id ccarId
+				from
+					car_image
+				where
+					ccar_id = #{ccarId}
+		</select>
+
+		<!--删除指定id汽车-->
+		<!-- void deleteOneCar(Integer id);-->
+		<!--<delete id="deleteOneCar">
+				delete from
+					car_car
+				where
+					id = #{id}
+		</delete> -->
+
+		<!--添加-->
+		<!--void addCar(Integer ccarId);-->
+		<insert id="addCar">
+			insert into
+				car_image(ccar_id)
+				values(#{ccarId})
+		</insert>
+
+		<!--获取最新添加的一个-->
+		<!--CarImage findOneNew(Integer ccarId)-->
+		<select id="findOneNew" resultType="com.springboot.demo.bean.CarImage">
+			select
+				id,
+				ccar_id ccarId
+			from
+				car_image
+			where
+				ccar_id = #{ccarId}
+			order by
+				id desc
+			limit	0,1
+		</select>
+
+		<!--删除汽车图片-->
+		<!--void deleteCarImage(Integer id)-->
+		<delete id="deleteCarImage">
+			delete
+				from car_image
+				where id = #{id}
+		</delete>
+
+		<!--获取数量-->
+		<!--Integer getCountCarImage(Integer ccarId);-->
+		<select  id="getCountCarImage" resultType="java.lang.Integer">
+  			select
+  				count(*)
+  			from
+  				car_image
+  			where
+  				ccar_id = #{ccarId}
+ 		 </select>
+	</mapper>
+	
+	
+	
+	
+	
+	
+	
+	
+	

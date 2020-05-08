@@ -1,0 +1,143 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('主/被动安全装备列表')">
+</head>
+<body>
+<script>
+    $(function(){
+        var dataVue={
+            uri:"propertyValue",
+            pagination:{},
+            beans:[],
+            ccategoryId:0,
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new Vue({
+            el:"#safetyequipmentPropertyValue",
+            data:dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list(1);
+            },
+            methods : {
+                //获取用户信息
+                list : function(start){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    var master = getUrlParms('master'); ///显示一级分类id
+                    this.grantParentId = grantParentId;
+                    this.master = master;
+                    var ccategoryId = getUrlParms("ccategoryId");
+                    this.ccategoryId = ccategoryId;
+                    var name = getUrlParms('name');
+                    this.name = name;
+                    var url = this.uri + "/listAllSafetyequipmentPropertyValue?ccategoryId="+ccategoryId+"&start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination=response.data;
+                        vue.beans=response.data.list;
+                    });
+                },
+                //删除指定用户
+                deleteBean : function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/deleteOneSafetyequipmentPropertyValue?id="+id;
+                    axios.get(url).then(function(response) {
+                        location.reload();
+                    });
+                },
+                jump : function (page) {
+                    jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                },
+                jumpByNumber : function(start){
+                    jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                }
+            }
+        });
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="safetyequipmentPropertyValue">
+    <div style="position:fixed;margin-top: -55px;margin-left: 92%">
+        <a :href="'listThridCarCategory?parentId='+this.grantParentId+'&grantParent='+master"><button type="button" class="btn btn-info">返回上一级</button></a>
+    </div>
+    <div style="position: absolute;top: 80px;left:700px;font-size: 25px;color: greenyellow">{{name}}参数配置</div>
+    <div th:replace="include/admin/propertyNavList :: propertyNav"></div>
+    <div  style="border: 2px solid silver;margin-top: 130px;margin-left: 150px;overflow:auto;height: 590px;width: 1385px">
+        <div >
+            <div id="basicParamPropertyValue_pageList" style="width: 3300px">
+                <table class="table table-striped table-bordered table-hover  table-condensed">
+                    <thead style="font-size: 15px">
+                        <th>id</th>
+                        <th>操作</th>
+                        <th>分类id</th>
+                        <th>主/副驾驶座安全气囊</th>
+                        <th>前/后排侧气囊</th>
+                        <th>前/后排头部气囊(气帘)</th>
+                        <th>膝部气囊</th>
+                        <th>后排安全带式气囊</th>
+                        <th>后排中央安全气囊</th>
+                        <th>被动行人保护</th>
+                        <th>胎压监测功能</th>
+                        <th>零胎压继续形式</th>
+                        <th>安全带未系提醒</th>
+                        <th>ISOFIX儿童座椅接口</th>
+                        <th>ABS防抱死</th>
+                        <th>制动力分类(EBD/CBC等)</th>
+                        <th>刹车辅助(EBA/BAS/BA等)</th>
+                        <th>牵引力控制(ASR/TCS/TRC等)</th>
+                        <th>车身稳定控制(ESC/ESP/DES等)</th>
+                        <th>并线辅助</th>
+                        <th>车道偏离预警系统</th>
+                        <th>车道保持辅助系统</th>
+                        <th>道路交通标识识别</th>
+                        <th>主动刹车/主动安全系统</th>
+                        <th>夜视系统</th>
+                        <th>疲劳驾驶提示</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for='b in beans' >
+                            <td>{{b.id}}</td>
+                            <td>
+                                <a :href="'editSafetyquipmentPropertyValue?id='+b.id+'&grantParentId='+grantParentId+'&master='+master+'&name='+name" style="text-decoration:none">编辑</a>
+                                <a  href="#"  style="text-decoration:none" @click="deleteBean(b.id)">删除</a>
+                            </td>
+                            <td>{{b.ccategoryId}}</td>
+                            <td>{{b.airbag}}</td>
+                            <td >{{b.sideairbag}}</td>
+                            <td >{{b.headairbag}}</td>
+                            <td>{{b.kneeairbag}}</td>
+                            <td >{{b.safebeltairbag}}</td>
+                            <td >{{b.centersafeairbag}}</td>
+                            <td>{{b.passivepedestrianprotection}}</td>
+                            <td>{{b.tirepressuremonitoring}}</td>
+                            <td>{{b.zerotirecontinue}}</td>
+                            <td>{{b.seatbeltnotfastened}}</td>
+                            <td >{{b.childseatjoint}}</td>
+                            <td >{{b.abs}}</td>
+                            <td>{{b.ebd}}</td>
+                            <td>{{b.eba}}</td>
+                            <td >{{b.asr}}</td>
+                            <td >{{b.esc}}</td>
+                            <td>{{b.doublingauxiliary}}</td>
+                            <td>{{b.fromearlywarning}}</td>
+                            <td >{{b.keepassist}}</td>
+                            <td>{{b.trafficsign}}</td>
+                            <td>{{b.activebrake}}</td>
+                            <td >{{b.nightsight}}</td>
+                            <td >{{b.fatiguedrivingtip}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageNav3">
+                <div  th:replace="include/admin/adminPage::html" ></div>
+            </div>
+            <div id="addbasicParamPropertyValue" style="position: absolute;left: 770px;bottom: 80px">
+                <a  class="btn btn-lg" :href="'addSafetyquipmentPropertyValue?ccategoryId='+ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size: 14px;position:fixed" >新增属性值</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

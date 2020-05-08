@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head   th:include="include/admin/adminHeader::html('导入评论')"></head>
+<body>
+<style>
+    #showImage{
+        margin-left: 40%;
+        margin-top: 25px
+    }
+    #updateImageOperate{
+        margin-left: 35%;
+        margin-top: 25px
+    }
+    #operateImage{
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+    #operateImage a{
+        margin-left: 15px;
+    }
+</style>
+<script >
+    $(function () {
+        var dataVue = {
+            uri:'review',
+            file:null
+        };
+        var vue = new Vue({
+            el : "#review",
+            data : dataVue,
+            methods : {
+                add : function(){
+                    if(this.file == null ||this.file==''){
+                        alert("请选择excle表格");
+                        return;
+                    }
+                    var xls = $("#reviewFile").val();
+                    if(xls.substring(xls.lastIndexOf("."),xls.length) == ".xlsx" || xls.substring(xls.lastIndexOf("."),xls.length) == ".xls") {
+                        var url = this.uri + "/importReview";
+                        var formData = new FormData();
+                        formData.append("file",this.file);
+                        axios.post(url,formData).then(function(response) {
+                            alert(response.data);
+                            location.reload();  //实现页面重新加载
+
+                        })
+                    }else{
+                        alert("请选择正确类型,导入excle表");
+                        return;
+                    }
+                },
+                /* 获取文件,赋值属性 */
+                getFile:function(event){
+                    this.file = event.target.files[0];
+
+                }
+            }
+        })
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+<div id="review" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+    <div class="panel panel-default" style="width: 800px; margin: 0 auto; margin-top: 150px">
+        <div class="panel-heading">模拟用户评价,导入excle表数据</div>
+        <div class="panel-body">
+            <div id="updateImageOperate">
+                <input id="reviewFile"  type="file" name="review" @change="getFile($event)" />
+                <div id="operateImage">
+                    <a href="#nowhere"  @click="add" class="btn btn-primary">提交</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+</body>
+</html>

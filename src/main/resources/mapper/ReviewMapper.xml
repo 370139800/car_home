@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace表示命名空间,值必须为接口名称(包括包名)  -->
+<!-- 实现类没有,mybaits框架会生成接口的实现类 -->
+<mapper namespace="com.springboot.demo.dao.ReviewDao">
+
+    <!--添加评论-->
+    <!--public void insertReview(Review review);-->
+    <insert id="insertReview" parameterType="com.springboot.demo.bean.Review"  >
+            INSERT  INTO
+                review(car_id,review,status,create_by,create_time)
+            VALUES (#{carId},#{review},0,#{createBy},now())
+	</insert>
+
+
+    <!--查询评论-->
+    <!--public List<Review> findAllReview(Review review);-->
+    <select id="findAllReview" resultType="com.springboot.demo.bean.Review" parameterType="com.springboot.demo.bean.Review">
+        SELECT
+            r.id id,
+            u.name uname,
+            cc.name ccname,
+            c.name cname,
+            r.status status,
+            r.review  review,
+            r.create_time createTime
+        FROM
+            review r
+        LEFT JOIN
+            user u ON r.create_by=u.id
+        LEFT JOIN
+            car_car c ON r.car_id = c.id
+        JOIN
+            car_category cc ON c.ccategory_id = cc.id
+        <where>
+            <if test="ccname !=''" >
+                cc.name like CONCAT(CONCAT('%', #{ccname, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="status !=3" >
+               and  r.status = #{status}
+            </if>
+        </where>
+
+        ORDER BY
+        r.create_time DESC
+	</select>
+
+
+    <!--删除评论-->
+    <!-- public void deleteReview(Integer id);-->
+    <delete id="deleteReview">
+				delete from
+					review
+				where
+					id = #{id}
+	</delete>
+
+    <!--修改指定id状态-->
+    <!--public void updateStatus(Review review)-->
+    <update id="updateStatus" parameterType="com.springboot.demo.bean.Review">
+            update
+               review
+            set
+               status= #{status}
+            where
+                id = #{id}
+    </update>
+</mapper>
+
+
+
+
+
+
+
+

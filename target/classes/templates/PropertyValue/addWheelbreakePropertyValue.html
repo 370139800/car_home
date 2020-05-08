@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('新增车轮制动属性信息')"></head>
+<body>
+<script>
+    $(function () {
+        var dataVue = {
+            uri:'propertyValue',
+            bean:{id:0,ccategoryId:0,frontbraketype:'',rearbraketype:'',parkingbraketype:'',fronttyrespecification:'',
+                reartyrespecification:'',sparetirespecifications:''},
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new  Vue({
+            el : '#addwheelbrakePropertyvalue',
+            data : dataVue,
+            mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+               this.getccategoryId();
+            },
+            methods : {
+                getccategoryId : function(){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    this.grantParentId = grantParentId;
+                    var master = getUrlParms('master'); //显示一级分类id
+                    this.master = master;var name = getUrlParms('name');
+                    this.name = name;
+                    this.bean.ccategoryId =  getUrlParms("ccategoryId");
+                },
+                //修改汽车种类细信息
+                addWheelbrakePropertyValueMsg : function(){
+                   var url = this.uri + '/addOneWheelbrakePropertyvalue';
+                    axios.post(url,vue.bean).then(function(response){
+                        alert(response.data);
+                        location.reload();
+                    });
+                },
+                back : function(){
+                    location.href = "listWheelbrakePropertyValue?ccategoryId="+vue.bean.ccategoryId+"&grantParentId="+vue.grantParentId+"&master="+vue.master+"&name="+vue.name;
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    #addwheelbrakePropertyvalue{
+        width: 800px;
+        height: 700px;
+        margin: 0 auto;
+    }
+    .panel-default{
+        height: 700px;
+    }
+</style>
+<div id="addwheelbrakePropertyvalue" >
+    <div class="panel panel-default">
+        <div class="panel-heading">新增车轮制动信息</div>
+        <div class="panel-body">
+            <table   width="700px" height="600px">
+                <tr>
+                    <td>前制动器类型:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.frontbraketype"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>后制动器类型:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.rearbraketype"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>驻车制动类型:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.parkingbraketype"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>前轮胎规格:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.fronttyrespecification"   />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>后轮胎规格:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.reartyrespecification"   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>备胎规格:</td>
+                    <td>
+                        <input type="text" class="form-control" v-model="bean.sparetirespecifications"  />
+                    </td>
+                </tr>
+                <tr >
+                    <td style="position: absolute;left: 600px"><button type="button" class="btn btn-sm" @click="addWheelbrakePropertyValueMsg()">提交</button></td>
+                    <td style="position: absolute;left: 750px"><button type="button" class="btn btn-sm" @click="back()">返回</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

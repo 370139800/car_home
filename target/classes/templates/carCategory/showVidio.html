@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('视频展示')"></head>
+<body>
+<script>
+    $(function () {
+        var dataVue = {
+            uri:'carCategory',
+            id:0,
+            name:'',
+            parentId:0,
+            garentParent:0
+        };
+        var vue = new  Vue({
+            el : '#CarVidio',
+            data : dataVue,
+            mounted : function () { //mounted　表示这个 Vue 对象加载成功了执行的操作
+                this.list();
+            },
+            methods : {
+                list : function () {
+                    var id = getUrlParms('id');
+                    this.id = id;
+                    var name = getUrlParms("name");
+                    this.name = name;
+                    var parentId = getUrlParms("parentId");
+                    this.parentId = parentId;
+                    var garentParent = getUrlParms("garentParent");
+                    this.garentParent = garentParent;
+                },
+                back : function(){
+                    location.href = "listThridCarCategory?parentId="+vue.parentId+"&grantParent="+vue.garentParent;
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+</style>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="nav1" th:include="include/admin/navList1 :: nav1" style="margin-top: -5px"></div>
+<div id="CarVidio" style="border: 1px solid #bdd7f2;width: 1325px;height: 665px;margin-top:53px;margin-left: 210px ">
+    <div style="margin-top: 5px;margin-right:10px;float: right"><button type="button" class="btn btn-sm" @click="back()">返回</button></div>
+    <div style="position:absolute;margin-left: 500px;margin-top: 30px;font-size: 30px;">{{name}}系列视频展示</div>
+    <div class="panel panel-default" style=" width: 800px;height:400px ;margin: 0 auto;margin-top: 130px">
+        <div class="panel-heading">视频展示</div>
+        <div class="panel-body">
+            <div id="bigBox">
+                <div style="margin-top:-105px;margin-left:-16px ">
+                    <video :src="'carVideo/'+id+'.mp4'" width="800" height="550" controls>视频播放</video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<div class="leftMenu" th:fragment="nav1">
+    <div class="menu">
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>首页</strong>
+                    <div class="leftbgbt"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a href="index?navName=首页" >首页</a></div>
+            </div>
+        </div>
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>车标管理</strong>
+                    <div class="leftbgbt2"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a href="listCarMark?navName=管理车标" >管理车标</a></div>
+                <div class="a"> <a href="addCarMark?navName=添加车标" >添加车标</a></div>
+            </div>
+        </div>
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>用户管理</strong>
+                    <div class="leftbgbt2"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a href="listUserPage?navName=用户管理" >用户管理</a></div>
+                <div class="a"> <a href="addUser?navName=添加用户" >添加用户</a></div>
+            </div>
+        </div>
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>车辆分类管理</strong>
+                    <div class="leftbgbt2"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a href="listStairCarCategory?navName=车辆分类管理" >车辆分类管理</a></div>
+            </div>
+        </div>
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>审核管理</strong>
+                    <div class="leftbgbt2"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a href="listReview?navName=评论审核" >评论审核</a></div>
+                <div class="a"> <a href="importReview?navName=导入评论" >导入评论</a></div>
+            </div>
+        </div>
+        <div class="menuParent">
+            <div class="ListTitlePanel">
+                <div class="ListTitle">
+                    <strong>系统管理</strong>
+                    <div class="leftbgbt2"> </div>
+                </div>
+            </div>
+            <div class="menuList">
+                <div class="a"> <a th:href="'editManager?navName=修改管理员信息&id='+${session.user.id}" >修改管理员信息</a></div>
+            </div>
+        </div>
+    </div>
+</div>

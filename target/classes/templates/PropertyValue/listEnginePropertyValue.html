@@ -1,0 +1,138 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('发动机列表')">
+</head>
+<body>
+<script>
+    $(function(){
+        var dataVue={
+            uri:"propertyValue",
+            pagination:{},
+            beans:[],
+            ccategoryId:0,
+            grantParentId:0,
+            master:0,
+            name:''
+        };
+        var vue = new Vue({
+            el:"#enginePropertyValue",
+            data:dataVue,
+            mounted:function(){  //当vue加载成功执行它
+                this.list(1);
+            },
+            methods : {
+                //获取发动机信息
+                list : function(start){
+                    var grantParentId =  getUrlParms('grantParentId'); //获取分类id
+                    var master = getUrlParms('master'); ///显示一级分类id
+                    this.grantParentId = grantParentId;
+                    this.master = master;
+                    var name = getUrlParms('name');
+                    this.name = name;
+                    var ccategoryId = getUrlParms("ccategoryId");
+                    this.ccategoryId = ccategoryId;
+                    var url = this.uri + "/listAllEnginePropertyValue?ccategoryId="+ccategoryId+"&start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination=response.data;
+                        vue.beans=response.data.list;
+                    });
+                },
+                //删除指定用户
+                deleteBean : function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/deleteOneEnginePropertyValue?id="+id;
+                    axios.get(url).then(function(response) {
+                        location.reload();
+                    });
+                },
+                jump : function (page) {
+                    jump(page,vue);    //点击左右两边跳转要么下一页要么最后一页,要么前一页要么第一页
+                },
+                jumpByNumber : function(start){
+                    jumpByNumber(start,vue); //显示出导航栏页数的跳转
+                }
+            }
+        });
+
+    });
+</script>
+<div th:replace="include/admin/navList :: nav"></div>
+<div id="enginePropertyValue">
+    <div style="position:fixed;margin-top: -55px;margin-left: 92%">
+        <a :href="'listThridCarCategory?parentId='+this.grantParentId+'&grantParent='+master"><button type="button" class="btn btn-info">返回上一级</button></a>
+    </div>
+    <div style="position: absolute;top: 80px;left:700px;font-size: 25px;color: greenyellow">{{name}}参数配置</div>
+    <div th:replace="include/admin/propertyNavList :: propertyNav"></div>
+    <div  style="border: 2px solid silver;margin-top: 130px;margin-left: 150px;overflow:auto;height: 590px;width: 1385px">
+        <div >
+            <div id="basicParamPropertyValue_pageList">
+                <table class="table table-striped table-bordered table-hover  table-condensed">
+                    <thead style="font-size: 15px">
+                        <th>id</th>
+                        <th>操作</th>
+                        <th>分类id</th>
+                        <th>发动机型号</th>
+                        <th>排量(ml)</th>
+                        <th>进气形式</th>
+                        <th>气缸排列形式</th>
+                        <th>气缸数(个)</th>
+                        <th>每缸气门数(个)</th>
+                        <th>压缩比</th>
+                        <th>配气机构</th>
+                        <th>缸径(mm)</th>
+                        <th>行程</th>
+                        <th>最大马力(kw)</th>
+                        <th>最大功率(kw)</th>
+                        <th>最大功率转速(rpm)</th>
+                        <th>发动机特有技术</th>
+                        <th>燃料形式</th>
+                        <th>燃油标号</th>
+                        <th>供油方式</th>
+                        <th>缸盖材料</th>
+                        <th>缸体材料</th>
+                        <th>环保标准</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for='b in beans' >
+                            <td>{{b.id}}</td>
+                            <td>
+                                <a :href="'editEnginePropertyValue?id='+b.id+'&grantParentId='+grantParentId+'&master='+master+'&name='+name" style="text-decoration:none">编辑</a>
+                                <a  href="#"  style="text-decoration:none" @click="deleteBean(b.id)">删除</a>
+                            </td>
+                            <td>{{b.ccategoryId}}</td>
+                            <td>{{b.engineype}}</td>
+                            <td >{{b.displacement}}</td>
+                            <td >{{b.airintakeform}}</td>
+                            <td>{{b.cylinderarrangement}}</td>
+                            <td>{{b.numberofcylinders}}</td>
+                            <td >{{b.numberofvalvespercylinder}}</td>
+                            <td >{{b.compressionratio}}</td>
+                            <td>{{b.valvemechanism}}</td>
+                            <td>{{b.cylinderdiameter}}</td>
+                            <td>{{b.journey}}</td>
+                            <td>{{b.maxhp}}</td>
+                            <td >{{b.maximumpower}}</td>
+                            <td >{{b.maximumpowerspeed}}</td>
+                            <td>{{b.enginespecifictechnology}}</td>
+                            <td>{{b.fuelform}}</td>
+                            <td >{{b.fuellabel}}</td>
+                            <td >{{b.oilsupplyway}}</td>
+                            <td>{{b.cylinderheadmaterial}}</td>
+                            <td>{{b.cylinderbodymaterial}}</td>
+                            <td>{{b.environmentalstandard}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageNav3">
+                <div  th:replace="include/admin/adminPage::html" ></div>
+            </div>
+            <div id="addbasicParamPropertyValue" style="position: absolute;left: 770px;bottom: 80px">
+                <a  class="btn btn-lg" :href="'addEnginePropertyValue?ccategoryId='+ccategoryId+'&grantParentId='+this.grantParentId+'&master='+master+'&name='+name" style="font-size: 14px;position:fixed" >新增属性值</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

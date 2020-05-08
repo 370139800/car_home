@@ -1,0 +1,18 @@
+<div th:fragment="nav">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="background-color: #f4f9ff;border: #bdd7f2 1px solid">
+        <img style="margin-left:10px;margin-right:0px;margin-top: 3px" class="pull-left" src="image/carsign/car.png" height="45px">
+        <a class="navbar-default" href="index" style="font-size: 20px;text-decoration:none;margin-left:10px;display:inline-block;margin-top: 10px ">汽车之家后台</a>
+        <div  style="position: absolute;left:50%;top: 28px;display: none">
+            <a id="navName" href="#"  th:text="${session.navName}"></a>
+        </div>
+        <div style="position: absolute;left:88.5%;top: 20px">
+            <a th:href="'updateManagerImage?id='+${session.user.id}"><img th:src="'image/admin/small_Image/'+${session.user.id}+'.jpg'" height="27px"   class="img-circle"></a>
+        </div>
+        <div style="position: absolute;left:91.2%;top: 28px">
+            <a th:href="'editManager?id='+${session.user.id}"  th:text="${session.user.name}"  style="color:black;text-decoration:none;font-family:'黑体'"></a>
+        </div>
+        <div style="position: absolute;left: 97%;top: 28px">
+            <a href="exit"  style="color:black;text-decoration:none;font-family:'黑体'" onclick="return confirm('确认要退出吗?')" >退出</a>
+        </div>
+    </nav>
+</div>
