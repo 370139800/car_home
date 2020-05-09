@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5d941b56-537b-4786-a070-714dc7265fbf" name="Default Changelist" comment="" />
+    <list default="true" id="357b709a-56fe-4178-b9a8-736a2fe419cf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/catalina.base_IS_UNDEFINED/logs/server.2020-05-08.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logback.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,13 +18,12 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\m2\repository" />
         <option name="mavenHome" value="D:/IDE/apache-maven-3.5.0" />
         <option name="userSettingsFile" value="D:\IDE\m2\repository\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="1bbgWiX9bKlZKOgtEACL9shH1cN" />
+  <component name="ProjectId" id="1bbiAHDzSFfSgWR9AQmyGJc0RJG" />
   <component name="PropertiesComponent">
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -57,12 +60,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5d941b56-537b-4786-a070-714dc7265fbf" name="Default Changelist" comment="" />
-      <created>1588906240776</created>
+      <changelist id="357b709a-56fe-4178-b9a8-736a2fe419cf" name="Default Changelist" comment="" />
+      <created>1588907048659</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1588906240776</updated>
-      <workItem from="1588906242015" duration="681000" />
+      <updated>1588907048659</updated>
+      <workItem from="1588907050963" duration="132000" />
     </task>
     <servers />
   </component>
